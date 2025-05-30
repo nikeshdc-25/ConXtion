@@ -12,6 +12,6 @@ interface ModelStore {
 export const useModel = create<ModelStore>((set) => ({
 type: null,
 isOpen: false,
-onOpen: (type: ModelType) => set({ type, isOpen: true }),
+onOpen: (type: ModelType) => set({  isOpen: true, type }),
 onClose: () => set({ type: null, isOpen: false }),
 }));

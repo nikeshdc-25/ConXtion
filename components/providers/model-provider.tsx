@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CreateServerModel } from "../models/create-server-model";
+import { CreateServerModel } from "@/components/models/create-server-model";
 
 export const ModelProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
