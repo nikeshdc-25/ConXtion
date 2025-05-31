@@ -9,17 +9,17 @@ export default async function ServerIdLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { serverId: string };
+  params: Promise<{ serverId: string }>;
 }) {
   const profile = await currentProfile();
   
   if (!profile) {
-    return RedirectToSignIn;
+    return <RedirectToSignIn />;
   }
 
   const server = await db.server.findUnique({
     where: {
-      id: params.serverId, //serverId is from [serverId] folder as params
+      id: (await params).serverId, //serverId is from [serverId] folder as params
       members: {
         some: {
           profileId: profile.id,
@@ -35,7 +35,7 @@ export default async function ServerIdLayout({
   return (
   <div className="h-full">
     <div className="md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
-      <ServerSidebar serverId={params.serverId}/>
+      <ServerSidebar serverId={(await params).serverId}/>
     </div>
     <main className="h-full md:pl-60">{children}</main>
   </div>
