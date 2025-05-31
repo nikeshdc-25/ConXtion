@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -22,42 +21,59 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
-import { FileUpload } from "../file-upload";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useModel } from "@/hooks/use-model-store";
+import { ChannelType } from "@prisma/client";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import qs from "query-string";
 
 const formSchema = z.object({
   name: z
     .string()
     .min(1, {
-      message: "Server Name is required",
+      message: "Channel Name is required",
     })
     .max(20, {
-      message: "Server must be less than 20 characters",
+      message: "Channel must be less than 20 characters",
+    })
+    .refine((name) => name !== "general", {
+      message: "Channel name cannot be general",
     }),
-  imageUrl: z.string().min(1, {
-    message: "Image URL is required",
-  }),
+  type: z.nativeEnum(ChannelType),
 });
 
-export const CreateServerModel = () => {
+export const CreateChannelModel = () => {
   const { isOpen, onClose, type } = useModel();
   const router = useRouter();
+  const params = useParams();
 
-  const isModelOpen = isOpen && type === "createServer";
+  const isModelOpen = isOpen && type === "createChannel";
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      imageUrl: "",
+      type: ChannelType.TEXT,
     },
   });
 
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/servers", values);
+      const url = qs.stringifyUrl({
+        url: "/api/channels",
+        query: {
+          serverId: params?.serverId,
+        },
+      });
+      await axios.post(url, values);
+
       form.reset();
       router.refresh();
       onClose();
@@ -73,51 +89,65 @@ export const CreateServerModel = () => {
 
   return (
     <Dialog open={isModelOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden top-[20%] left-[35%]">
+      <DialogContent className="bg-white text-black p-0 overflow-hidden top-[25%] left-[35%]">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl font-bold text-center">
-            Welcome to the Server
+            Create Channel
           </DialogTitle>
-          <DialogDescription className="text-center text-zinc-600 mt-2">
-            Give your server a name and description to get started.
-          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-8 px-6 pb-8">
-              <div className="flex items-center justify-center text-center">
-                <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <FileUpload
-                          endpoint="serverImage"
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Server Name
+                      Channel Name
                     </FormLabel>
                     <FormControl>
                       <Input
                         disabled={isLoading}
                         className="!bg-zinc-300/50 border-0 text-black focus-visible:ring-0 focus-visible:ring-offset-0"
-                        placeholder="Enter server name"
+                        placeholder="Enter channel name {eg. general}"
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                      Channel Type
+                    </FormLabel>
+                    <Select
+                      disabled={isLoading}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="!bg-zinc-300/50 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none">
+                          <SelectValue placeholder="Select channel type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.values(ChannelType).map((type) => (
+                          <SelectItem
+                            key={type}
+                            value={type}
+                            className="capitalize"
+                          >
+                            {type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
