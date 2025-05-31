@@ -60,17 +60,18 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         )}
         {isModerator && <DropdownMenuSeparator />}
         {isAdmin && (
+          <DropdownMenuItem onClick={() => onOpen("editServer", {server})} className="px-3 py-2 text-sm curser-pointer">
+            Server Setting
+            <SettingsIcon className="h-4 w-4 ml-auto" />
+          </DropdownMenuItem>
+        )}
+        {isAdmin && (
           <DropdownMenuItem className="px-3 py-2 text-sm text-red-400 curser-pointer">
             Delete Server
             <Trash className="h-4 w-4 ml-auto text-red-400" />
           </DropdownMenuItem>
         )}
-        {isAdmin && (
-          <DropdownMenuItem className="px-3 py-2 text-sm curser-pointer">
-            Server Setting
-            <SettingsIcon className="h-4 w-4 ml-auto" />
-          </DropdownMenuItem>
-        )}
+        
         {!isAdmin && (
           <DropdownMenuItem className="px-3 py-2 text-sm text-red-400 curser-pointer">
             Leave Server

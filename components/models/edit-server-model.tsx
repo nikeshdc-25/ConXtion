@@ -25,6 +25,7 @@ import { useForm } from "react-hook-form";
 import { FileUpload } from "../file-upload";
 import { useRouter } from "next/navigation";
 import { useModel } from "@/hooks/use-model-store";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z
@@ -40,11 +41,12 @@ const formSchema = z.object({
   }),
 });
 
-export const CreateServerModel = () => {
-  const { isOpen, onClose, type } = useModel();
+export const EditServerModel = () => {
+  const { isOpen, onClose, type, data } = useModel();
   const router = useRouter();
 
-  const isModelOpen = isOpen && type === "createServer";
+  const isModelOpen = isOpen && type === "editServer";
+  const { server } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -54,10 +56,17 @@ export const CreateServerModel = () => {
     },
   });
 
+  useEffect(() => {
+    if (server) {
+      form.setValue("name", server.name);
+      form.setValue("imageUrl", server.imageUrl);
+    }
+  }, [server, form]);
+
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/servers", values);
+      await axios.patch(`/api/servers/${server?.id}`, values);
       form.reset();
       router.refresh();
       onClose();
@@ -76,10 +85,10 @@ export const CreateServerModel = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden top-[20%] left-[35%]">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl font-bold text-center">
-            Welcome to the Server
+            Customize your Server
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-600 mt-2">
-            Give your server a name and description to get started.
+            Edit your server a name and description per your liking.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -113,7 +122,7 @@ export const CreateServerModel = () => {
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        className="!bg-zinc-300/50 border-0 text-black focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="!bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
                         placeholder="Enter server name"
                         {...field}
                       />
@@ -125,7 +134,7 @@ export const CreateServerModel = () => {
             </div>
             <DialogFooter className="bg-grey-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
-                Create
+                Update
               </Button>
             </DialogFooter>
           </form>
