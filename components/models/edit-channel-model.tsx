@@ -21,7 +21,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useModel } from "@/hooks/use-model-store";
 import { ChannelType } from "@prisma/client";
 import {
@@ -49,41 +49,38 @@ const formSchema = z.object({
   type: z.nativeEnum(ChannelType),
 });
 
-export const CreateChannelModel = () => {
+export const EditChannelModel = () => {
   const { isOpen, onClose, type, data } = useModel();
   const router = useRouter();
-  const params = useParams();
 
-  const isModelOpen = isOpen && type === "createChannel";
-  const { channelType } = data;
+  const isModelOpen = isOpen && type === "editChannel";
+  const { channel, server } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: ChannelType.TEXT,
+      type: channel?.type || ChannelType.TEXT,
     },
   });
 
   useEffect(() => {
-    if (channelType) {
-      form.setValue("name", "ConXtion")
-      form.setValue("type", channelType);
-    } else {
-      form.setValue("type", ChannelType.TEXT);
+    if(channel){
+      form.setValue("name", channel.name);
+      form.setValue("type", channel.type)
     }
-  }, [form, channelType]);
+  }, [form, channel]);
 
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: "/api/channels",
+        url: `/api/channels/${channel?.id}`,
         query: {
-          serverId: params?.serverId,
+          serverId: server?.id,
         },
       });
-      await axios.post(url, values);
+      await axios.patch(url, values);
 
       form.reset();
       router.refresh();
@@ -103,7 +100,7 @@ export const CreateChannelModel = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden top-[25%] left-[35%]">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl font-bold text-center">
-            Create Channel
+            Edit Channel
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -140,7 +137,7 @@ export const CreateChannelModel = () => {
                     <Select
                       disabled={isLoading}
                       onValueChange={field.onChange}
-                      value={field.value}
+                      defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger className="w-full !bg-zinc-300/50 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none">
@@ -166,7 +163,7 @@ export const CreateChannelModel = () => {
             </div>
             <DialogFooter className="bg-grey-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
-                Create
+                Update
               </Button>
             </DialogFooter>
           </form>
