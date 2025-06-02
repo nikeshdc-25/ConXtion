@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import qs from "query-string";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z
@@ -49,19 +50,28 @@ const formSchema = z.object({
 });
 
 export const CreateChannelModel = () => {
-  const { isOpen, onClose, type } = useModel();
+  const { isOpen, onClose, type, data } = useModel();
   const router = useRouter();
   const params = useParams();
 
   const isModelOpen = isOpen && type === "createChannel";
+  const { channelType } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: ChannelType.TEXT,
+      type: channelType || ChannelType.TEXT,
     },
   });
+
+  useEffect(() => {
+    if (channelType) {
+      form.setValue("type", channelType);
+    } else {
+      form.setValue("type", ChannelType.TEXT);
+    }
+  }, [channelType, form]);
 
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -132,7 +142,7 @@ export const CreateChannelModel = () => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="!bg-zinc-300/50 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none">
+                        <SelectTrigger className="w-full !bg-zinc-300/50 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none">
                           <SelectValue placeholder="Select channel type" />
                         </SelectTrigger>
                       </FormControl>

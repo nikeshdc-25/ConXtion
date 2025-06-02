@@ -19,6 +19,7 @@ export const ServerSection = ({
   role,
   sectionType,
   server,
+  channelType
 }: ServerSectionProps) => {
   const { onOpen } = useModel();
   return (
@@ -29,7 +30,7 @@ export const ServerSection = ({
       {role !== MemberRole.GUEST && sectionType === "channels" && (
         <ActionTooltip label="Create Channel" side="top">
           <button
-            onClick={() => onOpen("createChannel")}
+            onClick={() => onOpen("createChannel", { channelType })}
             className="text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300"
           >
             <Plus className="h-4 w-4" />

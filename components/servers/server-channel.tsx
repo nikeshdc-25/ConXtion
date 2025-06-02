@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Channel, ChannelType, MemberRole, Server } from "@prisma/client";
-import { CodeXml, Edit, Lock, PhoneCall, Trash2, Webcam } from "lucide-react";
+import { CodeXml, Edit, Lock, Mic, Trash2, Video } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { ActionTooltip } from "../action-tooltip";
 
@@ -14,8 +14,8 @@ interface ServerChannelProps {
 
 const iconMap = {
   [ChannelType.TEXT]: CodeXml,
-  [ChannelType.AUDIO]: PhoneCall,
-  [ChannelType.VIDEO]: Webcam,
+  [ChannelType.AUDIO]: Mic,
+  [ChannelType.VIDEO]: Video,
 };
 export const ServerChannel = ({
   channel,
