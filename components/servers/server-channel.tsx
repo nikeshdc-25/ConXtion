@@ -5,7 +5,7 @@ import { Channel, ChannelType, MemberRole, Server } from "@prisma/client";
 import { CodeXml, Edit, Lock, Mic, Trash2, Video } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { ActionTooltip } from "../action-tooltip";
-import { useModel } from "@/hooks/use-model-store";
+import { ModelType, useModel } from "@/hooks/use-model-store";
 
 interface ServerChannelProps {
   channel: Channel;
@@ -27,11 +27,20 @@ export const ServerChannel = ({
   const params = useParams();
   const router = useRouter();
   const Icon = iconMap[channel.type];
+
+  const onClick = () => {
+    router.push(`/servers/${params?.serverId}/channels/${channel.id}`);
+  };
+  const onAction = (e: React.MouseEvent, action: ModelType) => {
+    e.stopPropagation();
+    onOpen(action, { channel, server });
+  };
+
   return (
     <button
-      onClick={() => {}}
+      onClick={onClick}
       className={cn(
-        "group px-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/10 transition mb-4",
+        "group px-2 py-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1",
         params?.channelId === channel.id && "bg-zinc-700/20 dark:bg-zinc-700"
       )}
     >
@@ -49,13 +58,13 @@ export const ServerChannel = ({
         <div className="ml-auto flex items-center gap-x-2">
           <ActionTooltip label="Edit">
             <Edit
-              onClick={() => onOpen("editChannel", { server, channel })}
+              onClick={(e) => onAction(e,"editChannel")}
               className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
             />
           </ActionTooltip>
           <ActionTooltip label="Delete">
             <Trash2
-              onClick={() => onOpen("deleteChannel", { server, channel })}
+              onClick={(e) => onAction(e, "deleteChannel")}
               className="hidden group-hover:block w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
             />
           </ActionTooltip>

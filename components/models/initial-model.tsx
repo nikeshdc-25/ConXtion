@@ -74,7 +74,7 @@ export const InitialModel = () => {
 
   return (
     <Dialog open>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden top-[20%] left-[35%]">
+      <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl font-bold text-center">
             Welcome to the Server
@@ -85,7 +85,7 @@ export const InitialModel = () => {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="space-y-8 px-6 pb-8">
+            <div className="space-y-8 px-6">
               <div className="flex items-center justify-center text-center">
                 <FormField
                   control={form.control}

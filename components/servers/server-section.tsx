@@ -23,7 +23,7 @@ export const ServerSection = ({
 }: ServerSectionProps) => {
   const { onOpen } = useModel();
   return (
-    <div className="flex items-center justify-between py-2">
+    <div className="flex items-center justify-between py-3">
       <p className="text-xs font-semibold uppercase text-zinc-500 dark:text-zinc-400">
         {label}
       </p>
