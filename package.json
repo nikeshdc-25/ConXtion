@@ -34,6 +34,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.4",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "tailwind-merge": "^3.2.0",
     "uploadthing": "^7.7.2",
     "uuid": "^11.1.0",
