@@ -1,12 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Channel, ChannelType, Server } from "@prisma/client";
-import {create} from "zustand";
+import { create } from "zustand";
 
-export type ModelType = "createServer" | "invite" | "editServer" | "members" | "createChannel" | "leaveServer" | "deleteServer" | "deleteChannel" | "editChannel";
+export type ModelType =
+  | "createServer"
+  | "invite"
+  | "editServer"
+  | "members"
+  | "createChannel"
+  | "leaveServer"
+  | "deleteServer"
+  | "deleteChannel"
+  | "messageFile"
+  | "editChannel";
 
-interface ModelData{
-  server?:Server;
+interface ModelData {
+  server?: Server;
   channel?: Channel;
-  channelType?:ChannelType;
+  channelType?: ChannelType;
+  apiUrl?: string;
+  query?: Record<string, any>;
 }
 
 interface ModelStore {
@@ -18,9 +31,9 @@ interface ModelStore {
 }
 
 export const useModel = create<ModelStore>((set) => ({
-type: null,
-data: {},
-isOpen: false,
-onOpen: (type, data={}) => set({  isOpen: true, type, data }),
-onClose: () => set({ type: null, isOpen: false }),
+  type: null,
+  data: {},
+  isOpen: false,
+  onOpen: (type, data = {}) => set({ isOpen: true, type, data }),
+  onClose: () => set({ type: null, isOpen: false }),
 }));
