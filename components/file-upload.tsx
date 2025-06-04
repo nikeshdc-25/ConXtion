@@ -10,7 +10,7 @@ interface FileUploadProps {
 }
 
 export const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
-  const fileType = value?.split('.').pop()?.toLowerCase();
+  const fileType = value?.split(".").pop()?.toLowerCase();
   if (value && fileType !== "pdf") {
     return (
       <div className="relative h-20 w-20">

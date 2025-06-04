@@ -8,7 +8,7 @@ import { Fragment } from "react";
 import { ChatItem } from "./chat-item";
 import { format } from "date-fns";
 
-const DATE_FORMAT = "d MM yyyy, HH:mm";
+const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
 type MessageWithMemberWithProfile = Message & {
   member: Member & {

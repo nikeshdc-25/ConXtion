@@ -8,9 +8,10 @@ import { MembersModel } from "../models/members-model";
 import { CreateChannelModel } from "../models/create-channel-model";
 import { LeaveServerModel } from "../models/leave-server-model";
 import { DeleteServerModel } from "../models/delete-server-model";
-import { DeleteChannelodel } from "../models/delete-channel-model";
+import { DeleteChannelModel } from "../models/delete-channel-model";
 import { EditChannelModel } from "../models/edit-channel-model";
 import { MessageFileModel } from "../models/message-file-model";
+import { DeleteMessageModel } from "../models/delete-message-model";
 
 export const ModelProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -30,9 +31,10 @@ export const ModelProvider = () => {
       <CreateChannelModel />
       <LeaveServerModel />
       <DeleteServerModel />
-      <DeleteChannelodel />
+      <DeleteChannelModel />
       <EditChannelModel />
       <MessageFileModel />
+      <DeleteMessageModel />
     </>
   );
 };
