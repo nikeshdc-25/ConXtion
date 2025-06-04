@@ -1,4 +1,6 @@
 import { ChatHeader } from "@/components/chat/chat-header";
+import { ChatInput } from "@/components/chat/chat-input";
+import { ChatMessages } from "@/components/chat/chat-messages";
 import { getOrCreateConvo } from "@/lib/convo";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
@@ -44,14 +46,37 @@ const MemberIdPage = async ({ params }: MemberIdPageProps) => {
   const otherMember =
     memberOne.profileId === profile.id ? memberTwo : memberOne;
 
-  return <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
-    <ChatHeader
-    imageUrl={otherMember.profile.imageUrl}
-    name={otherMember.profile.name}
-    serverId={params.serverId}
-    type="convo"
-    />
-  </div>;
+  return (
+    <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
+      <ChatHeader
+        imageUrl={otherMember.profile.imageUrl}
+        name={otherMember.profile.name}
+        serverId={params.serverId}
+        type="convo"
+      />
+      <ChatMessages
+        member={currentMember}
+        name={otherMember.profile.name}
+        chatId={convo.id}
+        type="convo"
+        apiUrl="/api/direct-messages"
+        paramKey="convoId"
+        paramValue={convo.id}
+        socketUrl="/api/socket/direct-messages"
+        socketQuery={{
+          convoId: convo.id,
+        }}
+      />
+      <ChatInput
+        name={otherMember.profile.name}
+        type="convo"
+        apiUrl="/api/socket/direct-messages"
+        query={{
+          convoId: convo.id,
+        }}
+      />
+    </div>
+  );
 };
 
 export default MemberIdPage;
