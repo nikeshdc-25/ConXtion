@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { channelId: string } }
+  { params }: { params: Promise<{ channelId: string }> }
 ) {
   try {
     const profile = await currentProfile();
@@ -18,7 +18,7 @@ export async function DELETE(
     if (!serverId) {
       return new NextResponse("Server ID is required", { status: 400 });
     }
-    if (!params.channelId) {
+    if (!(await params).channelId) {
       return new NextResponse("Channel ID is required", { status: 400 });
     }
 
@@ -37,7 +37,7 @@ export async function DELETE(
       data: {
         channels: {
           delete: {
-            id: params.channelId,
+            id: (await params).channelId,
             name: {
               not: "general",
             },
@@ -55,7 +55,7 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { channelId: string } }
+  { params }: { params: Promise<{ channelId: string }> }
 ) {
   try {
     const profile = await currentProfile();
@@ -69,7 +69,7 @@ export async function PATCH(
     if (!serverId) {
       return new NextResponse("Server ID is required", { status: 400 });
     }
-    if (!params.channelId) {
+    if (!(await params).channelId) {
       return new NextResponse("Channel ID is required", { status: 400 });
     }
     if (name === "general") {
@@ -92,7 +92,7 @@ export async function PATCH(
         channels: {
           update: {
             where: {
-              id: params.channelId,
+              id: (await params).channelId,
               NOT: {
                 name: "general",
               },

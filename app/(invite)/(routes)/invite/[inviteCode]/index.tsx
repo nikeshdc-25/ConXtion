@@ -3,21 +3,20 @@ import { db } from "@/lib/db";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-interface InviteCodePageProps {
-  params: {
-    inviteCode?: string;
-  };
-  searchParams: Record<string, string | string[] | undefined>;
-}
-
-const InviteCodePage = async ({ params }: InviteCodePageProps) => {
+const InviteCodePage = async ({
+  params,
+}: {
+  params: { inviteCode: string };
+}) => {
   const profile = await currentProfile();
   if (!profile) {
     return <RedirectToSignIn />;
   }
+
   if (!params.inviteCode) {
     return redirect("/");
   }
+
   const existingServer = await db.server.findFirst({
     where: {
       inviteCode: params.inviteCode,
@@ -28,6 +27,7 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
       },
     },
   });
+
   if (existingServer) {
     return redirect(`/servers/${existingServer.id}`);
   }
@@ -47,7 +47,7 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
     },
   });
 
-  if(server){
+  if (server) {
     return redirect(`/servers/${server.id}`);
   }
 

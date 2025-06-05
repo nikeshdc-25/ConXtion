@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { memberId: string } }
+  { params }: { params: Promise<{ memberId: string }> }
 ) {
   try {
     const profile = await currentProfile();
@@ -17,7 +17,7 @@ export async function DELETE(
     if (!serverId) {
       return new NextResponse("Server ID is required", { status: 400 });
     }
-    if (!params.memberId) {
+    if (!(await params).memberId) {
       return new NextResponse("Member ID is required", { status: 400 });
     }
 
@@ -29,7 +29,7 @@ export async function DELETE(
       data: {
         members: {
           deleteMany: {
-            id: params.memberId,
+            id: (await params).memberId,
             profileId: {
               not: profile.id, // Ensure the member is not the current profile
             },
@@ -57,7 +57,7 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { memberId: string } }
+  { params }: { params: Promise<{ memberId: string }> }
 ) {
   try {
     const profile = await currentProfile();
@@ -71,7 +71,7 @@ export async function PATCH(
     if (!serverId) {
       return new NextResponse("Server ID is required", { status: 400 });
     }
-    if (!params.memberId) {
+    if (!(await params).memberId) {
       return new NextResponse("Member ID is required", { status: 400 });
     }
     const server = await db.server.update({
@@ -83,7 +83,7 @@ export async function PATCH(
         members: {
           update: {
             where: {
-              id: params.memberId,
+              id: (await params).memberId,
               profileId: {
                 not: profile.id, // Ensure the member is not the current profile
               },

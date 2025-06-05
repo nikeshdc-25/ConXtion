@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { serverId: string } }
+  { params }: { params: Promise<{ serverId: string }> }
 ) {
   try {
     const profile = await currentProfile();
@@ -17,7 +17,7 @@ export async function PATCH(
     }
     const server = await db.server.update({
       where: {
-        id: params.serverId,
+        id: (await params).serverId,
         profileId: profile.id,
       },
       data: {

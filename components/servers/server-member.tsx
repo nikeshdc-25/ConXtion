@@ -1,13 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Member, MemberRole, Profile } from "@prisma/client";
+import { Member, MemberRole, Profile, Server } from "@prisma/client";
 import { ShieldAlert, ShieldCheck, ShieldUser } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { UserAvatar } from "../user-avatar";
 
 interface ServerMemberProps {
   member: Member & { profile: Profile };
+  server: Server;
 }
 
 const roleIconMap = {
@@ -18,7 +19,8 @@ const roleIconMap = {
   [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 mr-2 text-rose-500" />,
 };
 
-export const ServerMember = ({ member }: ServerMemberProps) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const ServerMember = ({ member, server }: ServerMemberProps) => {
   const params = useParams();
   const router = useRouter();
 
