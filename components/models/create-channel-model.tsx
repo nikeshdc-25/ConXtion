@@ -67,7 +67,6 @@ export const CreateChannelModel = () => {
 
   useEffect(() => {
     if (channelType) {
-      form.setValue("name", "ConXtion")
       form.setValue("type", channelType);
     } else {
       form.setValue("type", ChannelType.TEXT);
@@ -100,7 +99,7 @@ export const CreateChannelModel = () => {
 
   return (
     <Dialog open={isModelOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden top-[25%] left-[35%]">
+      <DialogContent className="bg-white text-black p-0 overflow-hidden left-[4%] md:left-[35%] top-[25%]  sm:max-w-[425px]">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl font-bold text-center">
             Create Channel

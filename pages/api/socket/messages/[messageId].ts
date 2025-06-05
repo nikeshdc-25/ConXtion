@@ -24,7 +24,7 @@ export default async function handler(
     if (!channelId) {
       return res.status(400).json({ error: "Channel ID required" });
     }
-    const server = db.server.findFirst({
+    const server = await db.server.findFirst({
       where: {
         id: serverId as string,
         members: {
@@ -91,7 +91,7 @@ export default async function handler(
         },
         data: {
           fileUrl: null,
-          content: "This message has been deleted",
+          content: "(This message has been deleted.)",
           deleted: true,
         },
         include: {

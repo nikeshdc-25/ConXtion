@@ -3,6 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import "@livekit/components-styles";
 import { LiveKitRoom, VideoConference } from "@livekit/components-react";
 
 interface MediaRoomProps {
@@ -15,7 +16,7 @@ export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
   const { user } = useUser();
   const [token, setToken] = useState("");
   useEffect(() => {
-    if (!user?.firstName || user?.lastName) return;
+    if (!user?.firstName || !user?.lastName) return;
     const name = `${user.firstName} ${user.lastName}`;
 
     (async () => {

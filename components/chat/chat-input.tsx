@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
-import { Plus } from "lucide-react";
+import { Plus, SendHorizonal } from "lucide-react";
 import { Input } from "../ui/input";
 import qs from "query-string";
 import axios from "axios";
@@ -74,12 +74,23 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                     {...field}
                     className="px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
                   />
-                  <div className="absolute top-7 right-8 text-white dark:text-[#313338]">
+                  <div className="absolute flex gap-x-3 top-7 right-8 text-white dark:text-[#313338]">
                     <EmojiPicker
                       onChange={(emoji: string) =>
                         field.onChange(`${field.value} ${emoji}`)
                       }
                     />
+                    <button
+                      type="submit"
+                      disabled={isLoading || !field.value}
+                      className={`transition mb-2 ${
+                        !field.value
+                          ? "text-zinc-500 dark:text-zinc-400"
+                          : "text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300"
+                      }`}
+                    >
+                      <SendHorizonal className="h-6 w-6" />
+                    </button>
                   </div>
                 </div>
               </FormControl>

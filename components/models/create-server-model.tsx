@@ -73,7 +73,7 @@ export const CreateServerModel = () => {
 
   return (
     <Dialog open={isModelOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden top-[20%] left-[35%]">
+      <DialogContent className="bg-white text-black p-0 overflow-hidden left-[1%] md:left-[35%] top-[20%]">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl font-bold text-center">
             Welcome to the Server

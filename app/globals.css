@@ -120,3 +120,56 @@
     @apply bg-background text-foreground;
   }
 }
+
+.nav-sidebar {
+  width: 72px;
+  height: 100%;
+  position: fixed;
+  inset-block: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .nav-sidebar {
+    display: none;
+  }
+}
+
+.server-sidebar {
+  display: flex;
+  height: 100%;
+  width: 240px;
+  z-index: 20;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .server-sidebar {
+    display: none;
+  }
+}
+
+/* globals.css */
+.chat-item {
+  position: relative;
+}
+
+.chat-actions {
+  display: none;
+  position: absolute;
+  top: -0.75rem;
+  right: 1rem;
+  z-index: 10;
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.chat-item:hover .chat-actions {
+  display: flex;
+}

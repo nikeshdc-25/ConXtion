@@ -88,7 +88,7 @@ export const MembersModel = () => {
 
   return (
     <Dialog open={isModelOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white text-black overflow-hidden top-[20%] left-[35%]">
+      <DialogContent className="bg-white text-black p-0 overflow-hidden left-[4%] md:left-[35%] top-[25%]">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl font-bold text-center">
             Manage Members
@@ -100,7 +100,7 @@ export const MembersModel = () => {
         <ScrollArea className="mt-8 max-h-[420px] pr-6">
           {server?.members.map((member) => (
             <div key={member.id} className="flex items-center gap-x-2 mb-6">
-              <UserAvatar src={member.profile.imageUrl} />
+              <UserAvatar className="ml-6" src={member.profile.imageUrl} />
               <div className="flex flex-col gap-y-1">
                 <div className="text-xs font-semibold flex items-center gap-x-1">
                   {member.profile.name}

@@ -43,7 +43,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {isModerator && (
           <DropdownMenuItem
             onClick={() => onOpen("invite", { server })}
-            className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm curser-pointer"
+            className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
           >
             Invite People
             <UserPlus className="h-4 w-4 ml-auto" />
@@ -52,7 +52,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {isAdmin && (
           <DropdownMenuItem
             onClick={() => onOpen("members", { server })}
-            className="px-3 py-2 text-sm curser-pointer"
+            className="px-3 py-2 text-sm cursor-pointer"
           >
             Manage Members
             <UsersIcon className="h-4 w-4 ml-auto" />
@@ -61,7 +61,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {isModerator && (
           <DropdownMenuItem
             onClick={() => onOpen("createChannel", { server })}
-            className="px-3 py-2 text-sm curser-pointer"
+            className="px-3 py-2 text-sm cursor-pointer"
           >
             Create Channel
             <PlusCircle className="h-4 w-4 ml-auto" />
@@ -71,7 +71,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {isAdmin && (
           <DropdownMenuItem
             onClick={() => onOpen("editServer", { server })}
-            className="px-3 py-2 text-sm curser-pointer"
+            className="px-3 py-2 text-sm cursor-pointer"
           >
             Server Setting
             <SettingsIcon className="h-4 w-4 ml-auto" />
@@ -80,7 +80,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {isAdmin && (
           <DropdownMenuItem
             onClick={() => onOpen("deleteServer", { server })}
-            className="px-3 py-2 text-sm text-red-400 curser-pointer"
+            className="px-3 py-2 text-sm text-red-400 cursor-pointer"
           >
             Delete Server
             <Trash className="h-4 w-4 ml-auto text-red-400" />
@@ -90,7 +90,7 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {!isAdmin && (
           <DropdownMenuItem
             onClick={() => onOpen("leaveServer", { server })}
-            className="px-3 py-2 text-sm text-red-400 curser-pointer"
+            className="px-3 py-2 text-sm text-red-400 cursor-pointer"
           >
             Leave Server
             <LogOut className="h-4 w-4 ml-auto text-red-400" />

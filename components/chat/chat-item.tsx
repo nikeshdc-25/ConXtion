@@ -68,12 +68,12 @@ export const ChatItem = ({
   const params = useParams();
   const router = useRouter();
 
-  const onMemberClick = () =>{
-    if(member.id === currentMember.id){
+  const onMemberClick = () => {
+    if (member.id === currentMember.id) {
       return;
     }
-    router.push(`/servers/${params?.serverId}/convo/${member.id}`)
-  }
+    router.push(`/servers/${params?.serverId}/convo/${member.id}`);
+  };
 
   useEffect(() => {
     const handleKeyDown = (event: any) => {
@@ -119,22 +119,28 @@ export const ChatItem = ({
 
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
-  const isOwner = currentMember.role === member.id;
+  const isOwner = currentMember.id === member.id;
   const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
   const canEditMessage = !deleted && isOwner && !fileUrl;
   const isPdf = fileType === "pdf" && fileUrl;
   const isImage = !isPdf && fileUrl;
 
   return (
-    <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
+    <div className="chat-item group flex items-center hover:bg-black/5 p-4 transition w-full">
       <div className="group flex gap-x-2 items-start w-full">
-        <div onClick={onMemberClick} className="cursor-pointer hover:drop-shadow-md transition">
+        <div
+          onClick={onMemberClick}
+          className="cursor-pointer hover:drop-shadow-md transition"
+        >
           <UserAvatar src={member.profile.imageUrl} />
         </div>
         <div className="flex flex-col w-full">
           <div className="flex items-center gap-x-2">
             <div className="flex items-center">
-              <p onClick={onMemberClick} className="font-semibold text-sm hover:underline cursor-pointer">
+              <p
+                onClick={onMemberClick}
+                className="font-semibold text-sm hover:underline cursor-pointer"
+              >
                 {member.profile.name}
               </p>
               <ActionTooltip label={member.role}>
@@ -225,7 +231,7 @@ export const ChatItem = ({
         </div>
       </div>
       {canDeleteMessage && (
-        <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 dark:text-zinc-800 border-rounded-sm">
+        <div className="chat-actions items-center gap-x-2 bg-white dark:bg-zinc-900 p-1 transition">
           {canEditMessage && (
             <ActionTooltip label="Edit">
               <Edit

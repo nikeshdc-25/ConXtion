@@ -48,7 +48,7 @@ export const InviteModel = () => {
 
   return (
     <Dialog open={isModelOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden top-[20%] left-[35%]">
+      <DialogContent className="bg-white text-black p-0 overflow-hidden left-[1%] md:left-[35%] top-[25%]">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl font-bold text-center">
             Invite Friends
