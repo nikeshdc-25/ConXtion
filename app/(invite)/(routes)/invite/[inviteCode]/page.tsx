@@ -5,8 +5,9 @@ import { redirect } from "next/navigation";
 
 interface InviteCodePageProps {
   params: {
-    inviteCode: string;
+    inviteCode?: string;
   };
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
 const InviteCodePage = async ({ params }: InviteCodePageProps) => {
