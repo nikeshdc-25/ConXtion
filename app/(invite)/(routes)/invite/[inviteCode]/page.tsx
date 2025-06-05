@@ -3,23 +3,21 @@ import { db } from "@/lib/db";
 import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-const InviteCodePage = async ({
-  params,
-}: {
-  params: { inviteCode: string };
-}) => {
+interface InviteCodePageProps {
+  params: Promise<{ inviteCode: string }>;
+}
+
+const InviteCodePage = async ({ params }: InviteCodePageProps) => {
   const profile = await currentProfile();
   if (!profile) {
     return <RedirectToSignIn />;
   }
-
-  if (!params.inviteCode) {
+  if (!(await params).inviteCode) {
     return redirect("/");
   }
-
   const existingServer = await db.server.findFirst({
     where: {
-      inviteCode: params.inviteCode,
+      inviteCode: (await params).inviteCode,
       members: {
         some: {
           profileId: profile.id,
@@ -27,14 +25,13 @@ const InviteCodePage = async ({
       },
     },
   });
-
   if (existingServer) {
     return redirect(`/servers/${existingServer.id}`);
   }
 
   const server = await db.server.update({
     where: {
-      inviteCode: params.inviteCode,
+      inviteCode: (await params).inviteCode,
     },
     data: {
       members: {

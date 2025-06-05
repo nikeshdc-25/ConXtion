@@ -9,11 +9,12 @@ import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 interface ChannelIdPageProps {
-  params: {
+  params: Promise<{
     serverId: string;
     channelId: string;
-  };
+  }>;
 }
+
 
 const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
   const profile = await currentProfile();
@@ -22,12 +23,12 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
   }
   const channel = await db.channel.findUnique({
     where: {
-      id: params.channelId,
+      id: (await params).channelId,
     },
   });
   const member = await db.member.findFirst({
     where: {
-      serverId: params.serverId,
+      serverId: (await params).serverId,
       profileId: profile.id,
     },
   });

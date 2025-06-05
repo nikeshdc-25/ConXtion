@@ -9,13 +9,14 @@ import { RedirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 interface MemberIdPageProps {
-  params: {
-    memberId: string;
+  params: Promise<{
     serverId: string;
-  };
-  searchParams: {
+    memberId: string;
+  }>;
+
+  searchParams: Promise<{
     video?: boolean;
-  };
+  }>;
 }
 
 const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
@@ -27,7 +28,7 @@ const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
 
   const currentMember = await db.member.findFirst({
     where: {
-      serverId: params.serverId,
+      serverId: (await params).serverId,
       profileId: profile.id,
     },
     include: {
@@ -39,10 +40,15 @@ const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
     return redirect("/");
   }
 
-  const convo = await getOrCreateConvo(currentMember.id, params.memberId);
+  const convo = await getOrCreateConvo(
+    currentMember.id,
+    (
+      await params
+    ).memberId
+  );
 
   if (!convo) {
-    return redirect(`/servers/${params.serverId}`);
+    return redirect(`/servers/${(await params).serverId}`);
   }
 
   const { memberOne, memberTwo } = convo;
@@ -55,13 +61,13 @@ const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
       <ChatHeader
         imageUrl={otherMember.profile.imageUrl}
         name={otherMember.profile.name}
-        serverId={params.serverId}
+        serverId={(await params).serverId}
         type="convo"
       />
-      {searchParams.video && (
+      {(await searchParams).video && (
         <MediaRoom chatId={convo.id} video={true} audio={true} />
       )}
-      {!searchParams.video && (
+      {!(await searchParams).video && (
         <>
           <ChatMessages
             member={currentMember}

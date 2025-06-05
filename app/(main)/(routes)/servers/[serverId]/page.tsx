@@ -4,9 +4,9 @@ import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 interface ServerIdPageProps {
-  params: {
+  params: Promise<{
     serverId: string;
-  };
+  }>;
 }
 
 const ServerIDPage = async ({ params }: ServerIdPageProps) => {
@@ -17,7 +17,7 @@ const ServerIDPage = async ({ params }: ServerIdPageProps) => {
 
   const server = await db.server.findUnique({
     where: {
-      id: params.serverId,
+      id: (await params).serverId,
       members: {
         some: {
           profileId: profile.id,
@@ -42,7 +42,7 @@ const ServerIDPage = async ({ params }: ServerIdPageProps) => {
     return null;
   }
 
-  return redirect(`/servers/${params.serverId}/channels/${initialChannel?.id}`);
+  return redirect(`/servers/${(await params).serverId}/channels/${initialChannel?.id}`);
 };
 
 export default ServerIDPage;
