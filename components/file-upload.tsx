@@ -81,7 +81,8 @@ export const FileUpload = ({ onChange, value, endpoint }: FileUploadProps) => {
         const uploaded = res[0];
         const mime = uploaded.type || "";
         const isPdf = mime === "application/pdf";
-        let url = uploaded.url || uploaded.ufsUrl;
+        let url = uploaded.ufsUrl || uploaded.url;
+
         if (isPdf && !url.endsWith(".pdf")) {
           url += ".pdf";
         }
