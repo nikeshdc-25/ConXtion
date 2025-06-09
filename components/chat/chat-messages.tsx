@@ -94,7 +94,7 @@ export const ChatMessages = ({
       {hasNextPage && (
         <div className="flex justify-center">
           {isFetchingNextPage ? (
-            <Loader2 className="h-6 w-6 text-zinc-500 animate-spin my-4" />
+            <Loader2 className="h-6 w-6 text-zinc-700 animate-spin my-4" />
           ) : (
             <button
               onClick={() => fetchNextPage()}
